@@ -3,10 +3,10 @@
 
   angular
     .module('NgCalculator-mock')
-    .factory('StatisticsDataMock', StatisticsDataMock);
+    .factory('ABTestRelevanceDataMock', ABTestRelevanceDataMock);
 
 
-  function StatisticsDataMock() {
+  function ABTestRelevanceDataMock() {
     return {
       percantegeStandardError : [
         {access: 1, goals: 0, result: 0},
@@ -22,6 +22,10 @@
         {params: [2.7, 20.1], result: 20.280532537386687},
         {params: [9.1, 10.2, 13.6], result: 19.282375372344557},
         {params: [29.19, 29.18, 41.27, 20.9], result: 61.99638215250951}
+      ],
+      distNorm: [
+        {params : {score: 1.7216713633, mean: 0, sd: 1, cumulative: true}, result: 0.9574354661640616 },
+        {params : {score: 2.3867319633, mean: 0, sd: 1, cumulative: true}, result: 0.9915005601156361 }
       ]
     };
   }
