@@ -1,0 +1,24 @@
+{
+  "name": "ng-calculator",
+  "version": "0.1.0",
+  "authors": [
+    "José Roniérison <joseronierison@gmail.com>"
+  ],
+  "description": "IGD Angular Calculator",
+  "keywords": [
+    "angular"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "specs"
+  ],
+  "dependencies": {
+    "angular": "~1.3.14"
+  }
+}
