@@ -110,6 +110,38 @@ describe('Graph data Validator', function() {
         expect(abTestRelevanceService.normalDistribution(test.params.score, test.params.mean, test.params.sd, test.params.cumulative)).toEqual(test.result);
       }
     });
+  });
+
+
+  describe('Statistical Relevance', function() {
+    it('should return false when no params is provided', function() {
+      expect(abTestRelevanceService.statisticalRelevance()).toBe(false);
+    });
+
+    it('should return false when string params is provided', function() {
+      expect(abTestRelevanceService.statisticalRelevance('','0', '12', 'true')).toBe(false);
+    });
+
+    it('should return false when object params is provided', function() {
+      expect(abTestRelevanceService.statisticalRelevance({}, {}, {}, {})).toBe(false);
+    });
+
+    it('should return false when access as 0 is provided', function() {
+      expect(abTestRelevanceService.statisticalRelevance(0, 201, {invalid: '123'})).toBe(false);
+    });
+
+    it('should return false when invalid variation is provided', function() {
+      expect(abTestRelevanceService.statisticalRelevance(123123, 201, [{invalid: '123'}])).toBe(false);
+    });
+
+    it('TEST', function() {
+      console.log(abTestRelevanceService.statisticalRelevance([
+        {access: 4000, goals: 132},
+        {access: 4000, goals: 134},
+        {access: 4000, goals: 139},
+        {access: 4000, goals: 146}])
+      );
+    });
 
   });
 
