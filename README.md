@@ -9,7 +9,7 @@ eg.:
   * Your module
   */
   angular
-    .module('YourModuleName', ['NgCalculator']);
+    .module('YourModuleName', ['ABTestCalculator']);
 ```
 
 Inject the A\B test calculator service in your service, controller, directive, factory,.., and use it.
@@ -28,12 +28,12 @@ eg.:
         { access: 1001, goals: 55 },
         { access: 1000, goals: 35 }
       ],
-      
+
       result;
-    
+
       result = ABTestRelevanceService.statisticalRelevance();
       console.info(result);
-      
+
       /*
        * The console will show an object equal to this.
        * [
