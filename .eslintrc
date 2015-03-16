@@ -1,0 +1,31 @@
+{
+  "env": {
+    "node": 1,
+    "jasmine": 1,
+    "browser": 1
+  },
+  "globals": {
+    "angular": true
+  },
+  "plugins": [
+    "angular"
+  ],
+  "rules": {
+    "no-use-before-define": 0,
+    "quotes": [2, "single", "avoid-escape"],
+    "eqeqeq": 0,
+    "no-shadow": 1,
+    "indent": [2, 2],
+    "no-dupe-keys": 1,
+    "brace-style": [2, "stroustrup"],
+    "eol-last": 0,
+    "no-nested-ternary": 1,
+    "no-underscore-dangle": 0,
+    "space-after-function-name": [1, "never"],
+    "space-before-blocks": [1, "always"],
+    "space-in-parens": 1,
+    "space-in-parens": [2, "never"],
+    "space-after-keywords": 1,
+    "yoda": [1, "always"]
+  }
+}
