@@ -87,6 +87,12 @@
       return (cumulative) ? jStat.normal.cdf(score, mean, sd) : jStat.normal.pdf(score, mean, sd);
     };
 
+    /**
+     * Returns the z score of a variation with cotrol
+     * @param  {Object} control   The control page
+     * @param  {Object} variation The variation page
+     * @return {Float}
+     */
     this.zScore = function(control, variation) {
       var self = this,
           controlPError,
@@ -138,7 +144,7 @@
         return false;
       }
 
-      control = getPattern(variations);
+      control = getControl(variations);
 
       if (!control) {
         return false;
@@ -171,19 +177,40 @@
 
     };
 
+    /**
+     * Round the number with 2 decimal numbers
+     * @param  {Float} value
+     * @return {Float}
+     */
     function round(value) {
       return Math.round((value) * 100) / 100;
     }
 
+    /**
+     * Return as percentage the confidentiality
+     * @param  {Float} value
+     * @return {Float}
+     */
     function getConfidentiality(value) {
       return round((1 - value) * 100);
     }
 
+    /**
+     * Returns the percentage of goals
+     * @param  {Integer} goals  Conversion
+     * @param  {Integer} access Total of access
+     * @return {Float}
+     */
     function getRate(goals, access) {
       return round((goals / access) * 100);
     }
 
-    function getPattern(variations) {
+    /**
+     * Returns the control page of a test. It is chosen getting the page with the less rate conversion/access
+     * @param  {Array} variations
+     * @return {Object}
+     */
+    function getControl(variations) {
       var control,
           controlIndex,
           auxVariationRate;
