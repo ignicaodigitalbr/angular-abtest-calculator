@@ -4,7 +4,7 @@ The module has some methods that allows you to calculate specific values with da
 ##Usage
 Make the dependence injection of mudule.
 eg.:
-```
+```js
   /**
   * Your module
   */
@@ -14,7 +14,7 @@ eg.:
 
 Inject the A\B test calculator service in your service, controller, directive, factory,.., and use it.
 eg.:
-```
+```js
   angular
     .module('YourModuleName')
     .controller('YourController', YourController);
@@ -52,19 +52,19 @@ eg.:
 
 - Install [Grunt](http://gruntjs.com/):
 
-```
+```shellscript
 [sudo] npm install -g grunt-cli
 ```
 
 - Install dependencies:
 
-```
+```shellscript
 [sudo] npm install
 ```
 
 ###Running tests
 
-```
+```shellscript
 karma start
 ```
 
