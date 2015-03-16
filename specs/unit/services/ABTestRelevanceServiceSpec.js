@@ -1,8 +1,8 @@
 describe('Graph data Validator', function() {
   'use strict';
 
-  beforeEach(module('NgCalculator'));
-  beforeEach(module('NgCalculator-mock'));
+  beforeEach(module('ABTestCalculator'));
+  beforeEach(module('ABTestCalculator-mock'));
 
   var abTestRelevanceService,
       abTestRelevanceDataMock;

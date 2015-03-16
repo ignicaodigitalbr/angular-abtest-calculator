@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('NgCalculator-mock')
+    .module('ABTestCalculator-mock')
     .factory('ABTestRelevanceDataMock', ABTestRelevanceDataMock);
 
 

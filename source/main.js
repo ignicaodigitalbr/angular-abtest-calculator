@@ -2,10 +2,10 @@
   'use strict';
 
   /**
-  * ngCalculator Module
+  * ABTestCalculator Module
   *
   * Description
   */
   angular
-    .module('NgCalculator', []);
+    .module('ABTestCalculator', []);
 })();

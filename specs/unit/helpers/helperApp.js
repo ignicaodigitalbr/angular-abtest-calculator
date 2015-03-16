@@ -2,10 +2,10 @@
   'use strict';
 
   /**
-  * klicktestNgWidgetGraph Module
+  * ABTestCalculator-mock Module
   *
   * Description
   */
   angular
-    .module('NgCalculator-mock', []);
+    .module('ABTestCalculator-mock', []);
 })();

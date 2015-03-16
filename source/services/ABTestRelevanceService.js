@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('NgCalculator')
+    .module('ABTestCalculator')
     .service('ABTestRelevanceService', ABTestRelevanceService);
 
 
