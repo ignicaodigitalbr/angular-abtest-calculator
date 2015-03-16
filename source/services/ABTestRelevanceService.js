@@ -17,17 +17,17 @@
      *
      * @return {Float}
      */
-    this.percentageStandardError = function(access, goals){
+    this.percentageStandardError = function(access, goals) {
       if (!angular.isNumber(access) || !angular.isNumber(goals)) {
-        throw "Invalid params was provided.";
+        throw 'Invalid params was provided.';
       }
 
-      if(0 === access) {
-        throw "Access can't be 0 (zero).";
+      if (0 === access) {
+        throw 'Access can\'t be 0 (zero).';
       }
 
-      if ( goals > access) {
-        throw "Goals can't be greater than access.";
+      if (goals > access) {
+        throw 'Goals can\'t be greater than access.';
       }
 
       var standardError,
@@ -39,7 +39,7 @@
       standardError = Math.sqrt(sd);
 
       return standardError;
-    }
+    };
 
     /**
      * Standard Error
@@ -47,19 +47,19 @@
      * @param  {Array} measures array of measures
      * @return {Float}
      */
-    this.standardError = function(measures){
-      if (!angular.isArray(measures)){
-        throw "Invalid param was provided.";
+    this.standardError = function(measures) {
+      if (!angular.isArray(measures)) {
+        throw 'Invalid param was provided.';
       }
 
       var standardError = 0;
 
-      measures.forEach(function(value){
+      measures.forEach(function(value) {
         standardError += value * value;
       });
 
       return Math.sqrt(standardError);
-    }
+    };
 
     /**
      * Normal distribuition calc
@@ -71,7 +71,7 @@
      *
      * @return {Float}
      */
-    this.normalDistribution = function(score, mean, sd, cumulative){
+    this.normalDistribution = function(score, mean, sd, cumulative) {
       if (
         !angular.isNumber(score) ||
         !angular.isNumber(mean) ||
@@ -85,7 +85,40 @@
       }
 
       return (cumulative) ? jStat.normal.cdf(score, mean, sd) : jStat.normal.pdf(score, mean, sd);
-    }
+    };
+
+    this.zScore = function(control, variation) {
+      var self = this,
+          controlPError,
+          controlPAv,
+          variationPError,
+          variationPAv,
+          standardError,
+          zScore;
+
+      if (!angular.isObject(control) || !angular.isObject(variation)) {
+        return false;
+      }
+
+      if (angular.isUndefined(control.access) || angular.isUndefined(control.goals)) {
+        return false;
+      }
+
+      if (angular.isUndefined(variation.access) || angular.isUndefined(variation.goals)) {
+        return false;
+      }
+
+      controlPError = self.percentageStandardError(control.access, control.goals);
+      variationPError = self.percentageStandardError(variation.access, variation.goals);
+      standardError = self.standardError([controlPError, variationPError]);
+
+      controlPAv = control.goals / control.access;
+      variationPAv = variation.goals / variation.access;
+
+      zScore = (controlPAv - variationPAv) / standardError;
+
+      return zScore;
+    };
 
     /**
      * Calculate significance
@@ -94,87 +127,93 @@
      * @return {Object | Boolean}
      */
     this.statisticalRelevance = function(variations) {
+      var self = this,
+          zScore = 0,
+          pValue = 0,
+          confidentiality = 0,
+          result = [],
+          control;
+
       if (!angular.isArray(variations)) {
         return false;
       }
 
-      var thePattern = getPattern(variations);
+      control = getPattern(variations);
 
-      if(!thePattern){
+      if (!control) {
         return false;
       }
 
-      var self = this,
+      variations.forEach(function(variation, index) {
 
-          pattern_p_av = thePattern.goals / thePattern.access,
+        if (angular.isDefined(variation.index) && variation.index === index) {
+          result[index] = {
+            rate: getRate(variation.goals, variation.access),
+            type: 'pattern'
+          };
 
-          pattern_p_error = this.percentageStandardError(thePattern.access, thePattern.goals),
-
-          variation_p_av = 0,
-
-          variation_p_error = 0,
-
-          standard_error = 0,
-
-          z_score = 0,
-
-          p_value = 0,
-
-          result = [];
-
-      variations.forEach(function(variation, index){
-
-        variation_p_av = variation.goals / variation.access;
-        variation_p_error = self.percentageStandardError(variation.access, variation.goals);
-
-        if( angular.isDefined(variation.index) && variation.index === index){
-          result[index] = {rate: variation_p_av, type: 'pattern'};
           return;
         }
 
-        standard_error = self.standardError([pattern_p_error, variation_p_error]);
+        zScore = self.zScore(control, variation);
+        pValue = self.normalDistribution(zScore, 0, 1, true);
+        confidentiality = getConfidentiality(pValue);
 
-        z_score = (pattern_p_av + variation_p_av) / standard_error;
-
-        p_value = self.normalDistribution( z_score, 0, 1, true );
-
-        result[index] = {rate: variation_p_av, z_score: z_score, p_value: p_value};
+        result[index] = {
+          rate: getRate(variation.goals, variation.access),
+          zScore: zScore,
+          pValue: pValue,
+          confidentiality: confidentiality
+        };
       });
-
 
       return result;
 
+    };
+
+    function round(value) {
+      return Math.round((value) * 100) / 100;
     }
 
-    function getPattern (variations) {
+    function getConfidentiality(value) {
+      return round((1 - value) * 100);
+    }
+
+    function getRate(goals, access) {
+      return round((goals / access) * 100);
+    }
+
+    function getPattern(variations) {
+      var control,
+          controlIndex,
+          auxVariationRate;
+
       try {
-        variations.forEach(function(variation){
+        variations.forEach(function(variation) {
           if (
               !angular.isNumber(variation.goals) ||
               !angular.isNumber(variation.access)
             ) {
-            throw "Invalid variation param type was provided";
+            throw 'Invalid variation param type was provided';
           }
-          });
-      } catch (e) {
+        });
+      }
+      catch (e) {
         return false;
       }
 
-      var thePattern = variations[0],
-          aux_variation_rate = variations[0].goals / variations[0].access;
+      variations.forEach(function(variation, index) {
+        if (angular.isUndefined(auxVariationRate) || auxVariationRate > (variation.goals / variation.access)) {
+          control = variation;
+          controlIndex = index;
 
-      thePattern.index = 0;
-
-      variations.forEach(function(variation, index){
-        if ( (variation.goals / variation.access)  < aux_variation_rate  ) {
-          thePattern = variation;
-          thePattern.index = index;
-
-          aux_variation_rate = (variation.goals / variation.access);
+          auxVariationRate = (variation.goals / variation.access);
         }
       });
 
-      return thePattern;
+      control.index = controlIndex;
+
+      return control;
 
     }
   }

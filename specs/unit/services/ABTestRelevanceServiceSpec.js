@@ -14,33 +14,33 @@ describe('Graph data Validator', function() {
 
   describe('Standard Error Percentage', function() {
     it('should throw when no params is provided', function() {
-      expect(function(){
+      expect(function() {
         abTestRelevanceService.percentageStandardError();
       }).toThrow();
     });
 
     it('should throw when string params is provided', function() {
-      expect(function(){
+      expect(function() {
         abTestRelevanceService.percentageStandardError('', '');
       }).toThrow();
 
-      expect(function(){
+      expect(function() {
         abTestRelevanceService.percentageStandardError('', 0);
       }).toThrow();
 
-      expect(function(){
+      expect(function() {
         abTestRelevanceService.percentageStandardError(0, '0');
       }).toThrow();
     });
 
     it('should throw when access is 0 (zero) params is provided', function() {
-      expect(function(){
+      expect(function() {
         abTestRelevanceService.percentageStandardError(0, 1);
       }).toThrow();
     });
 
     it('should throw when goals is greater then access params is provided', function() {
-      expect(function(){
+      expect(function() {
         abTestRelevanceService.percentageStandardError(1, 2);
       }).toThrow();
     });
@@ -49,7 +49,7 @@ describe('Graph data Validator', function() {
       var data = abTestRelevanceDataMock.percantegeStandardError,
           params = {};
 
-      for(var index in data){
+      for (var index in data) {
         params = data[index];
 
         expect(abTestRelevanceService.percentageStandardError(params.access, params.goals)).toEqual(params.result);
@@ -60,21 +60,21 @@ describe('Graph data Validator', function() {
 
   describe('Standard Error', function() {
     it('should throw when no param is provided', function() {
-      expect(function(){
+      expect(function() {
         abTestRelevanceService.standardError();
       }).toThrow();
     });
 
     it('should throw when invalid param is provided', function() {
-      expect(function(){
+      expect(function() {
         abTestRelevanceService.standardError('');
       }).toThrow();
 
-      expect(function(){
+      expect(function() {
         abTestRelevanceService.standardError(0);
       }).toThrow();
 
-      expect(function(){
+      expect(function() {
         abTestRelevanceService.standardError({});
       }).toThrow();
     });
@@ -83,7 +83,7 @@ describe('Graph data Validator', function() {
       var data = abTestRelevanceDataMock.standardError,
           test = {};
 
-      for(var index in data){
+      for (var index in data) {
         test = data[index];
 
         expect(abTestRelevanceService.standardError(test.params)).toEqual(test.result);
@@ -97,14 +97,14 @@ describe('Graph data Validator', function() {
     });
 
     it('should return false if invalid sd is provided', function() {
-      expect(abTestRelevanceService.normalDistribution(1.293817283, 0,0,true)).toBe(false);
+      expect(abTestRelevanceService.normalDistribution(1.293817283, 0, 0, true)).toBe(false);
     });
 
     it('should return correct normal distribution', function() {
       var data = abTestRelevanceDataMock.distNorm,
           test = {};
 
-      for(var index in data){
+      for (var index in data) {
         test = data[index];
 
         expect(abTestRelevanceService.normalDistribution(test.params.score, test.params.mean, test.params.sd, test.params.cumulative)).toEqual(test.result);
@@ -112,6 +112,25 @@ describe('Graph data Validator', function() {
     });
   });
 
+  describe('Z Score', function() {
+    it('should return false if no params is provided', function() {
+      expect(abTestRelevanceService.zScore()).toBe(false);
+    });
+
+    it('should return false if no params is provided', function() {
+      var control = {
+        access: 1000,
+        goals: 30
+      };
+
+      var variation = {
+        access: 1000,
+        goals: 32
+      };
+
+      expect(abTestRelevanceService.zScore(control, variation)).toEqual(-0.2580355189695215);
+    });
+  });
 
   describe('Statistical Relevance', function() {
     it('should return false when no params is provided', function() {
@@ -119,7 +138,7 @@ describe('Graph data Validator', function() {
     });
 
     it('should return false when string params is provided', function() {
-      expect(abTestRelevanceService.statisticalRelevance('','0', '12', 'true')).toBe(false);
+      expect(abTestRelevanceService.statisticalRelevance('', '0', '12', 'true')).toBe(false);
     });
 
     it('should return false when object params is provided', function() {
@@ -134,13 +153,15 @@ describe('Graph data Validator', function() {
       expect(abTestRelevanceService.statisticalRelevance(123123, 201, [{invalid: '123'}])).toBe(false);
     });
 
-    it('TEST', function() {
-      console.log(abTestRelevanceService.statisticalRelevance([
-        {access: 4000, goals: 132},
-        {access: 4000, goals: 134},
-        {access: 4000, goals: 139},
-        {access: 4000, goals: 146}])
-      );
+    it('should return correct statistical values', function() {
+      var data = abTestRelevanceDataMock.statisticalRelevance,
+          test = {};
+
+      for (var index in data) {
+        test = data[index];
+
+        expect(abTestRelevanceService.statisticalRelevance(test.params)).toEqual(test.result);
+      }
     });
 
   });
