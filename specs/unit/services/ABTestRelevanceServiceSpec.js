@@ -13,36 +13,24 @@ describe('Graph data Validator', function() {
   }));
 
   describe('Standard Error Percentage', function() {
-    it('should throw when no params is provided', function() {
-      expect(function() {
-        abTestRelevanceService.percentageStandardError();
-      }).toThrow();
+    it('should return false when no params is provided', function() {
+      expect(abTestRelevanceService.percentageStandardError()).toBe(false);
     });
 
-    it('should throw when string params is provided', function() {
-      expect(function() {
-        abTestRelevanceService.percentageStandardError('', '');
-      }).toThrow();
+    it('should return false when string params is provided', function() {
+      expect(abTestRelevanceService.percentageStandardError('', '')).toBe(false);
 
-      expect(function() {
-        abTestRelevanceService.percentageStandardError('', 0);
-      }).toThrow();
+      expect(abTestRelevanceService.percentageStandardError('', 0)).toBe(false);
 
-      expect(function() {
-        abTestRelevanceService.percentageStandardError(0, '0');
-      }).toThrow();
+      expect(abTestRelevanceService.percentageStandardError(0, '0')).toBe(false);
     });
 
-    it('should throw when access is 0 (zero) params is provided', function() {
-      expect(function() {
-        abTestRelevanceService.percentageStandardError(0, 1);
-      }).toThrow();
+    it('should return false when access is 0 (zero) params is provided', function() {
+      expect(abTestRelevanceService.percentageStandardError(0, 1)).toBe(false);
     });
 
-    it('should throw when goals is greater then access params is provided', function() {
-      expect(function() {
-        abTestRelevanceService.percentageStandardError(1, 2);
-      }).toThrow();
+    it('should return false when goals is greater then access params is provided', function() {
+      expect(abTestRelevanceService.percentageStandardError(1, 2)).toBe(false);
     });
 
     it('should return correct calc values', function() {
@@ -59,24 +47,16 @@ describe('Graph data Validator', function() {
 
 
   describe('Standard Error', function() {
-    it('should throw when no param is provided', function() {
-      expect(function() {
-        abTestRelevanceService.standardError();
-      }).toThrow();
+    it('should return false when no param is provided', function() {
+      expect(abTestRelevanceService.standardError()).toBe(false);
     });
 
-    it('should throw when invalid param is provided', function() {
-      expect(function() {
-        abTestRelevanceService.standardError('');
-      }).toThrow();
+    it('should return false when invalid param is provided', function() {
+      expect(abTestRelevanceService.standardError('')).toBe(false);
 
-      expect(function() {
-        abTestRelevanceService.standardError(0);
-      }).toThrow();
+      expect(abTestRelevanceService.standardError(0)).toBe(false);
 
-      expect(function() {
-        abTestRelevanceService.standardError({});
-      }).toThrow();
+      expect(abTestRelevanceService.standardError({})).toBe(false);
     });
 
     it('should return correct calc values', function() {
