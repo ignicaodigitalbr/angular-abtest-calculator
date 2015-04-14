@@ -16,8 +16,9 @@
     .module('ABTestCalculator')
     .service('ABTestRelevanceService', ABTestRelevanceService);
 
+  ABTestRelevanceService.$inject = ['$log'];
 
-  function ABTestRelevanceService() {
+  function ABTestRelevanceService($log) {
 
     /**
      * Calculate the standard error of to measures
@@ -30,15 +31,18 @@
      */
     this.percentageStandardError = function(access, goals) {
       if (!angular.isNumber(access) || !angular.isNumber(goals)) {
-        throw 'Invalid params was provided.';
+        $log.warn('Invalid params was provided.');
+        return false;
       }
 
       if (0 === access) {
-        throw 'Access can\'t be 0 (zero).';
+        $log.warn('Access can\'t be 0 (zero).');
+        return false;
       }
 
       if (goals > access) {
-        throw 'Goals can\'t be greater than access.';
+        $log.warn('Goals can\'t be greater than access.');
+        return false;
       }
 
       var standardError,
@@ -60,7 +64,8 @@
      */
     this.standardError = function(measures) {
       if (!angular.isArray(measures)) {
-        throw 'Invalid param was provided.';
+        $log.warn('Invalid param was provided.');
+        return false;
       }
 
       var standardError = 0;
@@ -213,7 +218,8 @@
      * @return {Float}
      */
     function getRate(goals, access) {
-      return round((goals / access) * 100);
+      var rate = (access > 0)? round((goals / access) * 100) : 0;
+      return rate;
     }
 
     /**
@@ -232,7 +238,7 @@
               !angular.isNumber(variation.goals) ||
               !angular.isNumber(variation.access)
             ) {
-            throw 'Invalid variation param type was provided';
+            $log.warn('Invalid variation param type was provided');
           }
         });
       }
