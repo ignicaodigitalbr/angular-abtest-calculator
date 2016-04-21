@@ -1,6 +1,6 @@
 {
   "name": "ng-calculator",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "IGD Angular Calculator Lib",
   "scripts": {
     "test": "grunt eslint && karma start --single-run"

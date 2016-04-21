@@ -25,12 +25,11 @@
       }
 
       if (0 === access) {
-        $log.warn('Access can\'t be 0 (zero).');
         return false;
       }
 
       if (goals > access) {
-        $log.warn('Goals can\'t be greater than access.');
+        $log.error('Goals can\'t be greater than access.');
         return false;
       }
 
